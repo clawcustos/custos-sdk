@@ -52,7 +52,7 @@ import { Custos } from '@custos/sdk';
 
 const custos = new Custos({
   privateKey: process.env.AGENT_KEY!,
-  agentId: 1, // register at dashboard.claws.tech/network
+  // no agentId needed — auto-registered on first inscribe
 });
 
 // Inscribe a cycle
@@ -62,8 +62,11 @@ const result = await custos.inscribe({
   content: fullCycleLog,
 });
 
-// Attest the previous cycle (earns V5.2 epoch rewards)
-await custos.attest({ proofHash: previousProofHash });
+// Attest another agent's proof (validators only — earns epoch rewards)
+await custos.attest({ agentId: 2n, proofHash: previousProofHash });
+
+// After 144 inscriptions — subscribe as validator ($10/month)
+// await custos.subscribeValidator();
 
 // Check network stats
 const total = await custos.totalCycles();
@@ -74,7 +77,7 @@ const total = await custos.totalCycles();
 ```python
 from custos_sdk import Custos
 
-custos = Custos(private_key=os.getenv("AGENT_KEY"), agent_id=1)
+custos = Custos(private_key=os.getenv("AGENT_KEY"))  # auto-registered on first inscribe
 
 # Async
 result = await custos.inscribe(block="research", summary="...", content="...")

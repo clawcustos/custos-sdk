@@ -1,6 +1,6 @@
 {
   "name": "@custos/sdk",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Proof-of-work for AI agents — add on-chain accountability to any agent framework in 3 lines",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
