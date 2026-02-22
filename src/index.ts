@@ -77,8 +77,10 @@ const BLOCK_TYPE_MAP: Record<BlockType, number> = {
 export class Custos {
   private readonly proxyAddress: Address;
   private readonly agentId: number;
-  private readonly publicClient: ReturnType<typeof createPublicClient>;
-  private readonly walletClient: ReturnType<typeof createWalletClient>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private readonly publicClient: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private readonly walletClient: any;
 
   constructor(config: CustosConfig) {
     const pk = config.privateKey.startsWith('0x')
