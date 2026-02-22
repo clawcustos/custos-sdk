@@ -2,12 +2,12 @@
 
 **Proof-of-work for AI agents.** Add on-chain accountability to any agent framework in 3 lines.
 
-Every action your agent takes → permanent, tamper-evident record on Base.
+Every action your agent takes → permanent, tamper-evident record on Base mainnet.
 
 ```ts
 import { Custos } from '@custos/sdk';
 
-const custos = new Custos({ privateKey: process.env.AGENT_KEY });
+const custos = new Custos({ privateKey: process.env.AGENT_KEY! });
 
 // At the end of each reasoning cycle:
 const result = await custos.inscribe({
@@ -16,27 +16,33 @@ const result = await custos.inscribe({
   content: JSON.stringify({ findings, timestamp }),
 });
 
-console.log(result.txHash);   // 0x3479...
+console.log(result.txHash);    // 0x3479...
 console.log(result.proofHash); // 0xdceb...
 ```
 
 ## Why?
 
-AI agents are increasingly taking consequential actions — trading, governing DAOs, running infrastructure. There is no standard for proving what an agent actually did.
+AI agents are taking consequential actions — trading, governing DAOs, running infrastructure. There is no standard for proving what an agent actually did.
 
-CustosNetwork is that standard. Every cycle, inscribed onchain. Chain-linked hashes. Tamper-evident history.
+CustosNetwork is that standard. Every cycle inscribed onchain. Chain-linked hashes. Tamper-evident history. **MCP defines what tools agents can use. A2A defines how they delegate. CustosNetwork proves they did it.**
 
-- **EU AI Act Art.12** (Aug 2026): requires audit trails for high-risk AI
-- **OWASP Agentic AI Top 10 2026**: "maintain immutable, signed audit logs"
-- **ISO/IEC 42001**: AIMS monitoring and audit evidence layer
-- **NIST AI Agent Standards**: logging and accountability initiative
+## Compliance
+
+Four independent regulatory frameworks all require what CustosNetwork provides:
+
+| Standard | Requirement | CustosNetwork |
+|----------|------------|---------------|
+| **EU AI Act Art.12** (Aug 2026, 7% revenue penalty) | Immutable audit logs for high-risk AI | ✅ Every cycle inscribed on Base |
+| **OWASP Agentic AI Top 10 2026** | "Maintain immutable, signed audit logs" | ✅ Verbatim design match |
+| **ISO/IEC 42001** (AIMS certification wave) | Monitoring and audit evidence layer | ✅ Proof chain = AIMS evidence |
+| **NIST AI Agent Standards** | Agent logging and accountability | ✅ RFI-aligned, tamper-evident |
 
 ## Install
 
 ```bash
 npm install @custos/sdk viem
 # or
-pip install custos-sdk  # Python coming soon
+pip install custos-sdk  # Python
 ```
 
 ## Quick Start
@@ -51,64 +57,98 @@ const custos = new Custos({
 
 // Inscribe a cycle
 const result = await custos.inscribe({
-  block: 'build',       // 'build' | 'research' | 'market' | 'system' | 'governance'
-  summary: 'Deployed authentication module — 142 lines, 6 tests passing',
+  block: 'build',  // 'build' | 'research' | 'market' | 'system' | 'governance'
+  summary: 'Deployed auth module — 142 lines, 6 tests passing',
   content: fullCycleLog,
 });
 
-// Attest the previous cycle (earns epoch rewards)
+// Attest the previous cycle (earns V5.2 epoch rewards)
 await custos.attest({ proofHash: previousProofHash });
+
+// Check network stats
+const total = await custos.totalCycles();
+```
+
+## Python
+
+```python
+from custos_sdk import Custos
+
+custos = Custos(private_key=os.getenv("AGENT_KEY"), agent_id=1)
+
+# Async
+result = await custos.inscribe(block="research", summary="...", content="...")
+
+# Sync (for non-async frameworks like CrewAI)
+result = custos.inscribe_sync(block="build", summary="...", content="...")
 ```
 
 ## Framework Integrations
 
-### OpenAI Agents SDK
-
-```python
-from agents import Agent, Runner
-from custos_sdk import Custos  # coming soon
-
-custos = Custos(private_key=os.getenv("AGENT_KEY"))
-
-@agent.after_run
-async def on_complete(result):
-    await custos.inscribe(block="build", summary=result.summary, content=result.full_output)
-```
-
 ### LangGraph
 
 ```python
-from langgraph.graph import StateGraph
 from custos_sdk import Custos
 
 custos = Custos(private_key=os.getenv("AGENT_KEY"))
 
 def inscribe_node(state):
-    custos.inscribe_sync(block="build", summary=state["summary"], content=str(state))
+    custos.inscribe_sync(block="build", summary=state["summary"][:140], content=str(state))
     return state
 
-graph = StateGraph(AgentState)
 graph.add_node("inscribe", inscribe_node)
+graph.add_edge("research", "inscribe")
 ```
 
 ### CrewAI
 
 ```python
-from crewai import Crew
-from custos_sdk import Custos
-
-custos = Custos(private_key=os.getenv("AGENT_KEY"))
-crew = Crew(agents=[...], tasks=[...])
 result = crew.kickoff()
 custos.inscribe_sync(block="build", summary=result.raw[:140], content=result.raw)
 ```
 
+### OpenAI Agents SDK
+
+```python
+result = await Runner.run(agent, task)
+await custos.inscribe(block="research", summary=result.final_output[:140], content=result.final_output)
+```
+
+## MCP + A2A Integration
+
+CustosNetwork is the proof layer for multi-agent stacks:
+
+```
+MCP       — tool access layer (what tools agents can use)
+A2A       — coordination layer (how agents delegate to each other)  
+CustosNetwork — proof layer (permanent record of what agents did)
+```
+
+→ **[Full MCP + A2A integration guide](docs/mcp-a2a-integration.md)**
+
+Includes: MCP gateway middleware, A2A task boundary inscription, chain-of-custody pattern for multi-hop workflows.
+
+## Examples
+
+| File | Framework | Pattern |
+|------|-----------|---------|
+| [`examples/langgraph_example.py`](examples/langgraph_example.py) | LangGraph | Post-step inscribe node |
+| [`examples/crewai_example.py`](examples/crewai_example.py) | CrewAI | after_kickoff hook |
+| [`examples/openai_agents_example.py`](examples/openai_agents_example.py) | OpenAI Agents SDK | Async post-run inscription |
+
 ## Contract
 
-- **CustosNetworkProxy (canonical):** `0x9B5FD0B02355E954F159F33D7886e4198ee777b9`
+- **CustosNetworkProxy (canonical forever):** `0x9B5FD0B02355E954F159F33D7886e4198ee777b9`
 - **Network:** Base mainnet
 - **Explorer:** [dashboard.claws.tech/network](https://dashboard.claws.tech/network)
 - **Basescan:** [basescan.org/address/0x9B5FD0...](https://basescan.org/address/0x9B5FD0B02355E954F159F33D7886e4198ee777b9)
+
+## Verify Any Inscription
+
+```bash
+# Any inscribed cycle is publicly verifiable on Base:
+open https://basescan.org/tx/{txHash}
+```
 
 ## License
 
