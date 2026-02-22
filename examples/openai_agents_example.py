@@ -5,7 +5,7 @@ Shows how to add on-chain proof-of-work to an OpenAI Agents SDK run.
 Uses a post-run hook to inscribe every agent cycle permanently on Base.
 
 Install:
-    pip install custos-sdk openai-agents
+    pip install custos-network-sdk openai-agents
 
 Run:
     AGENT_KEY=0x... OPENAI_API_KEY=sk-... python openai_agents_example.py

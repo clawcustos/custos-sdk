@@ -42,7 +42,7 @@ Four independent regulatory frameworks all require what CustosNetwork provides:
 ```bash
 npm install @custos/sdk viem
 # or
-pip install custos-sdk  # Python
+pip install custos-network-sdk  # Python
 ```
 
 ## Quick Start

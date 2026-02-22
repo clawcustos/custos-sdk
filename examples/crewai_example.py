@@ -5,7 +5,7 @@ Shows how to add on-chain proof-of-work to a CrewAI crew in 3 lines.
 The after_kickoff hook inscribes the full crew output permanently on Base.
 
 Install:
-    pip install custos-sdk crewai
+    pip install custos-network-sdk crewai
 
 Run:
     AGENT_KEY=0x... OPENAI_API_KEY=sk-... python crewai_example.py

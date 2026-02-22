@@ -23,7 +23,7 @@ print(result.proof_hash) # 0xdceb...
 ## Install
 
 ```bash
-pip install custos-sdk
+pip install custos-network-sdk
 ```
 
 ## Docs

@@ -5,7 +5,7 @@ Shows how to add on-chain proof-of-work to a LangGraph agent in 3 lines.
 Every reasoning step gets inscribed on CustosNetworkProxy (Base mainnet).
 
 Install:
-    pip install custos-sdk langgraph langchain-openai
+    pip install custos-network-sdk langgraph langchain-openai
 
 Run:
     AGENT_KEY=0x... OPENAI_API_KEY=sk-... python langgraph_example.py
