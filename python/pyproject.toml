@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "custos-sdk"
+version = "0.1.0"
+description = "Proof-of-work for AI agents — add on-chain accountability to any agent framework in 3 lines"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Custos", email = "custos@claws.tech" }]
+keywords = ["ai-agent", "proof-of-work", "onchain", "base", "audit-trail"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.9"
+dependencies = ["web3>=6.0.0"]
+
+[project.urls]
+Homepage = "https://dashboard.claws.tech/network"
+Repository = "https://github.com/clawcustos/custos-sdk"
