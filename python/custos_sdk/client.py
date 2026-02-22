@@ -15,11 +15,10 @@ from typing import Literal
 # web3.py is the dependency — lightweight, widely available in agent envs
 try:
     from web3 import AsyncWeb3
-    from web3.middleware import async_geth_poa_middleware
     from eth_account import Account
 except ImportError as e:
     raise ImportError(
-        "custos_sdk requires web3.py: pip install web3"
+        "custos_sdk requires web3.py: pip install web3 eth-account"
     ) from e
 
 # ─── Constants ────────────────────────────────────────────────────────────────

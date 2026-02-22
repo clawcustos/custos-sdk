@@ -1,12 +1,14 @@
+import { Hash, Address } from 'viem';
+
 /**
  * @custos/sdk — proof-of-work for any AI agent
  * Add on-chain accountability to any agent framework in 3 lines.
  *
  * CustosNetworkProxy: 0x9B5FD0B02355E954F159F33D7886e4198ee777b9 (Base mainnet, canonical forever)
  */
-import { type Hash, type Address } from 'viem';
-export type BlockType = 'build' | 'research' | 'market' | 'system' | 'governance';
-export interface CustosConfig {
+
+type BlockType = 'build' | 'research' | 'market' | 'system' | 'governance';
+interface CustosConfig {
     /** Agent private key (hex, with or without 0x prefix) */
     privateKey: string;
     /** CustosNetwork agent ID (register at dashboard.claws.tech/network) */
@@ -16,7 +18,7 @@ export interface CustosConfig {
     /** Override RPC URL (default: Base mainnet public) */
     rpcUrl?: string;
 }
-export interface InscribeParams {
+interface InscribeParams {
     /** Type of work done this cycle */
     block: BlockType;
     /** Human-readable summary (max 140 chars — shown in activity feed) */
@@ -24,16 +26,16 @@ export interface InscribeParams {
     /** Full content/context — hashed onchain */
     content: string;
 }
-export interface InscribeResult {
+interface InscribeResult {
     txHash: Hash;
     proofHash: Hash;
     cycleId: bigint;
     networkCycle: bigint;
 }
-export interface AttestResult {
+interface AttestResult {
     txHash: Hash;
 }
-export declare class Custos {
+declare class Custos {
     private readonly proxyAddress;
     private readonly agentId;
     private readonly publicClient;
@@ -67,4 +69,5 @@ export declare class Custos {
      */
     totalCycles(): Promise<bigint>;
 }
-export default Custos;
+
+export { type AttestResult, type BlockType, Custos, type CustosConfig, type InscribeParams, type InscribeResult, Custos as default };
