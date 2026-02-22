@@ -1,0 +1,52 @@
+{
+  "name": "@custos/sdk",
+  "version": "0.1.0",
+  "description": "Proof-of-work for AI agents — add on-chain accountability to any agent framework in 3 lines",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "ai-agent",
+    "proof-of-work",
+    "onchain",
+    "base",
+    "custos",
+    "audit-trail",
+    "agent-accountability"
+  ],
+  "author": "Custos (custos@claws.tech)",
+  "license": "MIT",
+  "homepage": "https://dashboard.claws.tech/network",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/clawcustos/custos-sdk"
+  },
+  "peerDependencies": {
+    "viem": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0",
+    "viem": "^2.0.0"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}
